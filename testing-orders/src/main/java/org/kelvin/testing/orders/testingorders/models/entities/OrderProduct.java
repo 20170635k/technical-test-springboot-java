@@ -1,4 +1,6 @@
-package org.kelvin.testing.orders.testingorders.models;
+package org.kelvin.testing.orders.testingorders.models.entities;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
@@ -10,12 +12,14 @@ public class OrderProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_product", referencedColumnName = "id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_order", referencedColumnName = "id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Order order;
 
     private Integer quantity;

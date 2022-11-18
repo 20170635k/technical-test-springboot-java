@@ -1,6 +1,6 @@
 package org.kelvin.testing.orders.testingorders.controllers;
 
-import org.kelvin.testing.orders.testingorders.models.Product;
+import org.kelvin.testing.orders.testingorders.models.entities.Product;
 import org.kelvin.testing.orders.testingorders.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

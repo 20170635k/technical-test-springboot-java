@@ -1,6 +1,6 @@
 package org.kelvin.testing.orders.testingorders.services;
 
-import org.kelvin.testing.orders.testingorders.models.Product;
+import org.kelvin.testing.orders.testingorders.models.entities.Product;
 import org.kelvin.testing.orders.testingorders.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

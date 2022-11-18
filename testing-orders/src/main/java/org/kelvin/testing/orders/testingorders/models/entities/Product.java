@@ -1,10 +1,10 @@
-package org.kelvin.testing.orders.testingorders.models;
+package org.kelvin.testing.orders.testingorders.models.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tb_products")
@@ -16,7 +16,8 @@ public class Product {
     private String name;
     private Double price;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "product")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<OrderProduct> registrations;
 
     public List<OrderProduct> getRegistrations() {
@@ -51,10 +52,7 @@ public class Product {
         this.price = price;
     }
 
-    public List<Order> getOrders(){
-        return getRegistrations()
-                .stream()
-                .map(registrations ->registrations.getOrder())
-                .collect(Collectors.toList());
+    public List<OrderProduct> getOrders(){
+        return getRegistrations();
     }
 }

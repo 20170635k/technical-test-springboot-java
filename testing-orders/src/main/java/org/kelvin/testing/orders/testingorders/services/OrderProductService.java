@@ -1,9 +1,7 @@
 package org.kelvin.testing.orders.testingorders.services;
 
-import org.kelvin.testing.orders.testingorders.models.Order;
-import org.kelvin.testing.orders.testingorders.models.OrderProduct;
-import org.kelvin.testing.orders.testingorders.models.Product;
-import org.kelvin.testing.orders.testingorders.repositories.OrderProductRepository;
+import org.kelvin.testing.orders.testingorders.models.entities.Order;
+import org.kelvin.testing.orders.testingorders.models.entities.OrderProduct;
 import org.kelvin.testing.orders.testingorders.repositories.OrderRepository;
 import org.kelvin.testing.orders.testingorders.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,7 @@ public class OrderProductService implements IOrderProductService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> getProductsByOrderId(Long id) {
+    public List<OrderProduct> getProductsByOrderId(Long id) {
         System.out.println("is present" + id);
         Optional<Order> optionalOrder = orderRepository.findById(id);
         if(optionalOrder.isPresent()){

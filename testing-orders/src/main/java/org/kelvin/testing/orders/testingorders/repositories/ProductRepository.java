@@ -1,6 +1,6 @@
 package org.kelvin.testing.orders.testingorders.repositories;
 
-import org.kelvin.testing.orders.testingorders.models.Product;
+import org.kelvin.testing.orders.testingorders.models.entities.Product;
 import org.springframework.data.repository.CrudRepository;
 
 
