@@ -2,6 +2,7 @@ package org.kelvin.testing.orders.testingorders.services;
 
 import org.kelvin.testing.orders.testingorders.models.entities.Order;
 import org.kelvin.testing.orders.testingorders.models.entities.OrderProduct;
+import org.kelvin.testing.orders.testingorders.repositories.OrderProductRepository;
 import org.kelvin.testing.orders.testingorders.repositories.OrderRepository;
 import org.kelvin.testing.orders.testingorders.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class OrderProductService implements IOrderProductService{
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private OrderProductRepository orderProductRepository;
+
     @Override
     @Transactional(readOnly = true)
     public List<OrderProduct> getProductsByOrderId(Long id) {
@@ -34,13 +38,13 @@ public class OrderProductService implements IOrderProductService{
     @Override
     @Transactional(readOnly = true)
     public Optional<OrderProduct> getByProductOrderId(Long id) {
-        return Optional.empty();
+        return orderProductRepository.findById(id);
     }
 
     @Override
     @Transactional
-    public OrderProduct saveProductOrder(Long id, OrderProduct orderProduct) {
-        return null;
+    public OrderProduct save( OrderProduct orderProduct) {
+        return orderProductRepository.save(orderProduct);
     }
 
     @Override

@@ -4,7 +4,11 @@ import org.kelvin.testing.orders.testingorders.models.OrderItem;
 import org.kelvin.testing.orders.testingorders.models.OrderM;
 import org.kelvin.testing.orders.testingorders.models.ProductM;
 import org.kelvin.testing.orders.testingorders.models.entities.Order;
+import org.kelvin.testing.orders.testingorders.models.entities.OrderProduct;
+import org.kelvin.testing.orders.testingorders.models.entities.Product;
+import org.kelvin.testing.orders.testingorders.services.IOrderProductService;
 import org.kelvin.testing.orders.testingorders.services.IOrderService;
+import org.kelvin.testing.orders.testingorders.services.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +25,10 @@ import java.util.stream.Collectors;
 public class OrderController {
     @Autowired
     private IOrderService orderService;
+    @Autowired
+    private IProductService productService;
+    @Autowired
+    private IOrderProductService orderProductService;
 
     @GetMapping
     public List<OrderM> getAll(){
@@ -79,18 +87,48 @@ public class OrderController {
         return ResponseEntity.notFound().build();
     }
     @PostMapping
-    public ResponseEntity<?> post(@RequestBody Order order){
-        return  ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(order)) ;
+    public ResponseEntity<?> post(@RequestBody OrderM order){
+
+        Order newOrder = new Order();
+        newOrder.setNumber(order.getNumber());
+        newOrder.setDate(order.getDate());
+        Order orderCreated = orderService.save((newOrder));
+            for(OrderItem orderItem: order.getOrders()){
+                    Product productTemp = productService.getById(orderItem.getProduct().getId()).get();
+                    OrderProduct orderProductTemp = new OrderProduct();
+                    orderProductTemp.setProduct(productTemp);
+                    orderProductTemp.setOrder(orderCreated);
+                    orderProductTemp.setQuantity(orderItem.getQuantity());
+                    orderProductService.save(orderProductTemp);
+            }
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderCreated);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Order order, @PathVariable Long id){
+    public ResponseEntity<?> update(@RequestBody OrderM order, @PathVariable Long id){
 
         Optional<Order> optionalOrder = orderService.getById(id);
         if(optionalOrder.isPresent()){
             Order orderUpdate = optionalOrder.get();
             orderUpdate.setNumber(order.getNumber());
             orderUpdate.setDate(order.getDate());
+
+            for(OrderItem orderItem: order.getOrders()){
+                if(orderItem.getId()!=0){
+                    Product productTemp = productService.getById(orderItem.getProduct().getId()).get();
+                    OrderProduct orderProductTemp = orderProductService.getByProductOrderId(orderItem.getId()).get();
+                    orderProductTemp.setProduct(productTemp);
+                    orderProductTemp.setQuantity(orderItem.getQuantity());
+                    orderProductService.save(orderProductTemp);
+                }else{
+                    Product productTemp = productService.getById(orderItem.getProduct().getId()).get();
+                    OrderProduct orderProductTemp = new OrderProduct();
+                    orderProductTemp.setProduct(productTemp);
+                    orderProductTemp.setOrder(orderUpdate);
+                    orderProductTemp.setQuantity(orderItem.getQuantity());
+                    orderProductService.save(orderProductTemp);
+                }
+            }
             return ResponseEntity.status(HttpStatus.CREATED).body(orderService.save(orderUpdate));
         }
         return ResponseEntity.notFound().build();

@@ -24,6 +24,14 @@ public class OrderProduct {
 
     private Integer quantity;
 
+    public OrderProduct(){}
+
+    public OrderProduct(Long id,Product product, Order order, Integer quantity) {
+        this.product = product;
+        this.order = order;
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }

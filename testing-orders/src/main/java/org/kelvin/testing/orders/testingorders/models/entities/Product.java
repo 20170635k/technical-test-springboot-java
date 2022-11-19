@@ -16,9 +16,18 @@ public class Product {
     private String name;
     private Double price;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<OrderProduct> registrations;
+
+    public Product(){
+
+    }
+    public Product(Long id, String name, Double price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
 
     public List<OrderProduct> getRegistrations() {
         return registrations;

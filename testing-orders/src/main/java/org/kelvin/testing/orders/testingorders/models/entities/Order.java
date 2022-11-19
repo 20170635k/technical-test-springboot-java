@@ -15,11 +15,17 @@ public class Order {
     private String number;
     private String date;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "order")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "order")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<OrderProduct> registrations;
 
     public Order(){
+
+    }
+    public Order(Long id, String number, String date){
+        this.id = id;
+        this.number = number;
+        this.date = date;
         registrations = new ArrayList<>();
     }
 

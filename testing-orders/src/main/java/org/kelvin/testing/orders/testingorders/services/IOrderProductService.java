@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface IOrderProductService {
     List<OrderProduct> getProductsByOrderId(Long id);
     Optional<OrderProduct> getByProductOrderId(Long id);
-    OrderProduct saveProductOrder(Long id, OrderProduct orderProduct);
+    OrderProduct save( OrderProduct orderProduct);
     void deleteProductOrder(Long id);
 }
